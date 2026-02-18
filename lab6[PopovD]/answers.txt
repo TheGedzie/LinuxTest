@@ -1,0 +1,83 @@
+Часть 1.
+1.Команда : echo $$ 
+Вывод: 2199
+2. Команда: ls -la /proc 
+Вывод:
+total 4
+dr-xr-xr-x 226 root      root                    0 Feb 18 10:53 .
+drwxr-xr-x   1 root      root                 4096 Feb 17 10:13 ..
+dr-xr-xr-x   9 codespace codespace               0 Feb 18 10:53 1
+dr-xr-xr-x   9 codespace codespace               0 Feb 18 10:53 1074
+dr-xr-xr-x   9 codespace codespace               0 Feb 18 10:53 1087
+dr-xr-xr-x   9 codespace codespace               0 Feb 18 10:53 183
+dr-xr-xr-x   9 codespace codespace               0 Feb 18 10:53 1917
+dr-xr-xr-x   9 root      root                    0 Feb 18 10:53 1974 
+....... 
+3.Команда: cd /proc/2199 ls -la 
+Вывод: 
+total 0
+dr-xr-xr-x   9 root root 0 Feb 18 10:53 .
+dr-xr-xr-x 227 root root 0 Feb 18 10:53 ..
+-r--r--r--   1 root root 0 Feb 18 11:02 arch_status
+dr-xr-xr-x   2 root root 0 Feb 18 10:53 attr
+-rw-r--r--   1 root root 0 Feb 18 11:02 autogroup
+-r--------   1 root root 0 Feb 18 11:02 auxv
+-r--r--r--   1 root root 0 Feb 18 10:53 cgroup
+--w-------   1 root root 0 Feb 18 11:02 clear_refs
+-r--r--r--   1 root root 0 Feb 18 10:53 cmdline
+.......
+4.Команда: ls -la /proc/2199/fd
+Вывод: 
+total 0
+dr-x------ 2 codespace codespace  6 Feb 18 10:54 .
+dr-xr-xr-x 9 codespace codespace  0 Feb 18 10:53 ..
+lrwx------ 1 codespace codespace 64 Feb 18 10:54 0 -> /dev/pts/0
+lrwx------ 1 codespace codespace 64 Feb 18 10:54 1 -> /dev/pts/0
+lrwx------ 1 codespace codespace 64 Feb 18 10:54 2 -> /dev/pts/0
+lrwx------ 1 codespace codespace 64 Feb 18 10:54 255 -> /dev/pts/0
+lrwx------ 1 codespace codespace 64 Feb 18 10:54 26 -> /dev/pts/ptmx
+l-wx------ 1 codespace codespace 64 Feb 18 10:54 6 -> /dev/null
+
+Часть 2.
+1. Команда: echo "Hello world!"
+Вывод: Hello world!
+2.Команда: ls /test 2> /dev/stderr
+ВЫвод: ls: cannot access '/test': No such file or directory
+3.Команда: ls test2 test  > stdout.txt 2> stderr.tsx
+Вывод: Пусто, мы перенаправили ошибку 
+4.Команда:cat stdout.txt 
+Вывод: test2:
+Команда: cat stderr.tsx 
+Вывод: ls: cannot access 'test': No such file or directory
+
+Часть 3.
+Права доступа 644 (восьмеричное число) означают:
+- Первая цифра (6) - права для владельца: чтение (4) + запись (2) = 6 (rw-)
+- Вторая цифра (4) - права для группы: только чтение (4) (r--)
+- Третья цифра (4) - права для остальных: только чтение (4) (r--)
+
+Таким образом, 644 = rw-r--r--, что означает:
+- Владелец может читать и записывать файл
+- Группа может только читать файл
+- Остальные пользователи могут только читать файл
+
+Часть 6.
+Команда 1: ./app > out.txt 2> err.txt
+Команда 2: ./app > all.txt 2>&1
+Команда 3: ./app 2> errors.txt 1> output.txt
+
+Описание команд:
+1. Первая команда: ./app > out.txt 2> err.txt
+   - > out.txt     - перенаправляет stdout (обычный вывод) в файл out.txt
+   - 2> err.txt    - перенаправляет stderr (ошибки) в файл err.txt
+   Результат: обычный вывод в out.txt, ошибки в err.txt
+
+2. Вторая команда: ./app > all.txt 2>&1
+   - > all.txt     - перенаправляет stdout в файл all.txt
+   - 2>&1          - перенаправляет stderr туда же, куда и stdout
+   Результат: оба потока объединены в файле all.txt
+
+3. Третья команда: ./app 2> errors.txt 1> output.txt
+   - 2> errors.txt - перенаправляет stderr в errors.txt
+   - 1> output.txt - перенаправляет stdout в output.txt
+   Результат: как и в первой команде, потоки разделены
